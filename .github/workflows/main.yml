@@ -1,0 +1,47 @@
+name: CI/CD Pipeline for GitHub Gist API
+
+on:
+  push:
+    branches:
+      - main  # Trigger this workflow whenever code is pushed to the 'main' branch
+  pull_request:
+    branches:
+      - main  # Also trigger when a pull request is opened/updated against 'main'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest  # Specifies the operating system for the job to run on
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4  # Step to get your code from the GitHub repository
+
+      - name: Set up Python 3.9  # Or your specific Python version (e.g., 3.12)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9' # Make sure this matches your requirements/app.py
+
+      - name: Install dependencies
+        run: | # The '|' allows for multi-line commands
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests
+        run: |
+          pytest # This will run your test_app.py
+
+      - name: Build Docker image
+        # Using GitHub Container Registry (ghcr.io) for simplicity, as it's built into GitHub
+        # This requires logging in to ghcr.io using a GitHub Token
+        run: docker build -t ghcr.io/${{ github.repository }}:latest .
+
+      - name: Log in to GitHub Container Registry
+        # This step uses a special GitHub token provided by GitHub Actions
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push Docker image to GitHub Container Registry
+        run: docker push ghcr.io/${{ github.repository }}:latest
