@@ -1,4 +1,4 @@
-name: CI/CD Pipeline for GitHub Gist API
+  name: CI/CD Pipeline for GitHub Gist API
 
 on:
   push:
@@ -37,11 +37,7 @@ jobs:
 
       - name: Log in to GitHub Container Registry
         # This step uses a special GitHub token provided by GitHub Actions
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+        run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u vahidhasheerin --password-stdin
 
       - name: Push Docker image to GitHub Container Registry
         run: docker push ghcr.io/${{ github.repository }}:latest
