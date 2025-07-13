@@ -1,4 +1,4 @@
-  name: CI/CD Pipeline for GitHub Gist API
+name: CI/CD Pipeline for GitHub Gist API
 
 on:
   push:
