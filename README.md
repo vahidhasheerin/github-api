@@ -21,7 +21,7 @@ Ensure you have the following installed:
 1. **Clone the repository:**
 
     git clone https://github.com/<YOUR_GITHUB_USERNAME>/<YOUR_REPO_NAME>.git
-    #cd YOUR_REPO_NAME
+    cd YOUR_REPO_NAME
    
 2. **Setup with Docker**
 
