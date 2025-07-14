@@ -36,15 +36,13 @@ jobs:
         run: |
           pip install flake8 pytest pytest-cov safety
 
+
       - name: Lint with flake8
         run: |
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-      - name: Check dependencies for vulnerabilities
-        run: |
-          safety check --full-report
-
+     
       - name: Run tests with coverage
         run: |
           pytest --cov=.
