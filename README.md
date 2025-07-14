@@ -22,20 +22,21 @@ Ensure you have the following installed:
 
     git clone https://github.com/<YOUR_GITHUB_USERNAME>/<YOUR_REPO_NAME>.git
    
-    cd YOUR_REPO_NAME
+    cd <YOUR_REPO_NAME>
    
-3. **Setup with Docker**
+2. **Setup with Docker**
 
-   #2.1 **Build the Docker image:**
+   **2.1 Build the Docker image:**
 
     docker build -t github-api .
 
-    #2.2. **Run the container:**
+   **2.2 Run the container:**
     docker run -p 8080:8080 github-api
+    
     The API will now be accessible at http://127.0.0.1:8080
 
-4. **Setup locally(without Docker)**
-  Set Up Virtual Environment & Install Dependencies
+3. **Setup locally(without Docker)**
+    Set Up Virtual Environment & Install Dependencies
    
     # 3.1 Create a virtual environment
       python3.12 -m venv venv
