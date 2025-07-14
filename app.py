@@ -15,28 +15,15 @@ def not_found_error(error):
 
 @app.route("/<string:username>", methods=["GET"])
 def get_user_gists(username):
-    """
-    Retrieves a list of public Gists for a given GitHub username.
-    """
     if not username:
         abort(400, description="Username cannot be empty.")
-
     try:
-        # Construct the URL for the user's public gists
-        gists_url = f"{GITHUB_API_BASE_URL}/users/{username}/gists"
-
-        # Make a request to the GitHub API
-        response = requests.get(gists_url)
+        gists_url = f"{GITHUB_API_BASE_URL}/users/{username}/gists"  # Construct the URL for the user's public gists
+        response = requests.get(gists_url) # Make a request to the GitHub API
         response.raise_for_status()  # Raise an exception for HTTP errors (4xx or 5xx)
-
         gists = response.json()
-
-        # Filter for public gists (GitHub API for user gists generally returns public by default,
-        # but it's good practice to be explicit or handle potential private gists if context changes)
-        public_gists = [gist for gist in gists if gist.get('public', False) is True]
-
+        public_gists = [gist for gist in gists if gist.get('public', False) is True]  # Filter for public gists
         return jsonify(public_gists)
-
     except requests.exceptions.HTTPError as e:
         if e.response.status_code == 404:
             # User not found or no public gists
