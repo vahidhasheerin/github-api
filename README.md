@@ -20,12 +20,13 @@ Ensure you have the following installed:
 
 1. **Clone the repository:**
 
-    git clone https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME.git
-
+    git clone https://github.com/<YOUR_GITHUB_USERNAME>/<YOUR_REPO_NAME>.git
     cd YOUR_REPO_NAME
    
 2. **Setup with Docker**
+
     2.1 **Build the Docker image:**
+
     docker build -t github-api .
 
     2.2. **Run the container:**
