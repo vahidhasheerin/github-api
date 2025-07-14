@@ -2,42 +2,73 @@ name: CI/CD Pipeline for GitHub Gist API
 
 on:
   push:
-    branches:
-      - main  # Trigger this workflow whenever code is pushed to the 'main' branch
+    branches: [main]
   pull_request:
-    branches:
-      - main  # Also trigger when a pull request is opened/updated against 'main'
+    branches: [main]
 
 jobs:
-  build-and-test:
-    runs-on: ubuntu-latest  # Specifies the operating system for the job to run on
+  build-test-analyze:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4  # Step to get your code from the GitHub repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Set up Python 3.9  # Or your specific Python version (e.g., 3.12)
+      - name: Set up Python 3.9
         uses: actions/setup-python@v5
         with:
-          python-version: '3.9' # Make sure this matches your requirements/app.py
+          python-version: '3.9'
 
-      - name: Install dependencies
-        run: | # The '|' allows for multi-line commands
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Upgrade pip and install dependencies
+        run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run tests
+      - name: Install development dependencies
         run: |
-          pytest # This will run your test_app.py
+          pip install flake8 pytest pytest-cov safety
 
-      - name: Build Docker image
-        # Using GitHub Container Registry (ghcr.io) for simplicity, as it's built into GitHub
-        # This requires logging in to ghcr.io using a GitHub Token
-        run: docker build -t ghcr.io/${{ github.repository }}:latest .
+      - name: Lint with flake8
+        run: |
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+      - name: Check dependencies for vulnerabilities
+        run: |
+          safety check --full-report
+
+      - name: Run tests with coverage
+        run: |
+          pytest --cov=.
+
+      # Uncomment and set CODECOV_TOKEN in your repo secrets if you want code coverage reporting
+      # - name: Upload coverage to Codecov
+      #   uses: codecov/codecov-action@v4
+      #   with:
+      #     token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Log in to GitHub Container Registry
-        # This step uses a special GitHub token provided by GitHub Actions
-        run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u vahidhasheerin --password-stdin
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PAT }}
 
-      - name: Push Docker image to GitHub Container Registry
-        run: docker push ghcr.io/${{ github.repository }}:latest
+      - name: Build and push Docker image (multi-arch)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository }}:latest
+          platforms: linux/amd64,linux/arm64
