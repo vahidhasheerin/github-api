@@ -75,7 +75,7 @@ Ensure you have the following installed:
 
    Ensure your virtual environment is active and you are in the `<YOUR-REPO>` directory
    
-   [pytest]
+   `pytest`
 
 ## License
 MIT License
