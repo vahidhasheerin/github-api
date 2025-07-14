@@ -53,9 +53,9 @@ Ensure you have the following installed:
 
      **3.4  Running the Application with Gunicorn**
 
-      Gunicorn is a production-grade WSGI server that offers better performance and stability than Flask's built-in                 development server. This is a good choice for local demonstrations.
+      Gunicorn is a production-grade WSGI server that offers better performance and stability than Flask's built-in                 development server.
 
-       Ensure your virtual environment is active and you are in the <YOUR-REPO> directory
+      Ensure your virtual environment is active and you are in the <YOUR-REPO> directory
 
       `gunicorn --bind 0.0.0.0:8080 app:app`
 
