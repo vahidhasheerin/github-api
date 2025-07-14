@@ -26,11 +26,12 @@ Ensure you have the following installed:
    
 2. **Setup with Docker**
 
-   **2.1 Build the Docker image:**
+   **2.1  Build the Docker image:**
 
     docker build -t github-api .
 
-   **2.2 Run the container:**
+   **2.2  Run the container:**
+   
     docker run -p 8080:8080 github-api
     
     The API will now be accessible at http://127.0.0.1:8080
@@ -38,19 +39,25 @@ Ensure you have the following installed:
 3. **Setup locally(without Docker)**
     Set Up Virtual Environment & Install Dependencies
    
-    # 3.1 Create a virtual environment
+     **3.1 Create a virtual environment**
+
       python3.12 -m venv venv
 
-    # 3.2 Activate the virtual environment
+     **3.2 Activate the virtual environment**
+
       source venv/bin/activate  # On Windows: `.\venv\Scripts\activate`
 
-    # 3.3 Install the required Python packages
+     **3.3 Install the required Python packages**
+
       pip install -r requirements.txt
 
-    # 3.4  Running the Application with Gunicorn
+     **3.4  Running the Application with Gunicorn**
       Gunicorn is a production-grade WSGI server that offers better performance and stability than Flask's built-in                 development server. This is a good choice for local demonstrations.
-      # Ensure your virtual environment is active and you are in the `[YOUR-REPO]` directory
+
+       Ensure your virtual environment is active and you are in the `[YOUR-REPO]` directory
+
       gunicorn --bind 0.0.0.0:8080 app:app
+
       The API will be available at http://127.0.0.1:8080.
 
 5. **Test the API**
