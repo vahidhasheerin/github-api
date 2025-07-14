@@ -102,8 +102,6 @@ def test_empty_username(client):
     data = json.loads(response.data)
 
     assert response.status_code == 404 # Flask's default for unmatched routes
-    # For a more explicit 400, you might add a specific route like '/api/' that redirects or handles this
-    # For this exercise, Flask's default 404 is acceptable for the root path if no user is provided.
     assert "error" in data
     assert "Resource not found or invalid URL." in data["error"]
     assert response.headers['Content-Type'] == 'application/json'
