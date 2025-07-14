@@ -23,7 +23,7 @@ Ensure you have the following installed:
     git clone https://github.com/<YOUR_GITHUB_USERNAME>/<YOUR_REPO_NAME>.git
     cd YOUR_REPO_NAME
    
-2. **Setup with Docker**
+3. **Setup with Docker**
 
     2.1 **Build the Docker image:**
 
@@ -33,7 +33,7 @@ Ensure you have the following installed:
     docker run -p 8080:8080 github-api
     The API will now be accessible at http://127.0.0.1:8080
 
-3. **Setup locally(without Docker)**
+4. **Setup locally(without Docker)**
   Set Up Virtual Environment & Install Dependencies
    
     # 3.1 Create a virtual environment
@@ -51,12 +51,12 @@ Ensure you have the following installed:
       gunicorn --bind 0.0.0.0:8080 app:app
       The API will be available at http://127.0.0.1:8080.
 
-4. **Test the API**
+5. **Test the API**
    Send a curl request to the API (e.g., for user octocat):
    curl http://127.0.0.1:8080/octocat
    You should receive a JSON array of octocat's public Gists.
 
-5. **Run Automated Tests**
+6. **Run Automated Tests**
    To ensure everything is working correctly and to verify the code quality:  
    # Ensure your virtual environment is active and you are in the `[YOUR-REPO]` directory
    pytest
