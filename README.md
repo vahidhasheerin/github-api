@@ -37,6 +37,7 @@ Ensure you have the following installed:
     The API will now be accessible at http://127.0.0.1:8080
 
 3. **Setup locally(without Docker)**
+   
     Set Up Virtual Environment & Install Dependencies
    
      **3.1 Create a virtual environment**
@@ -61,7 +62,7 @@ Ensure you have the following installed:
 
       The API will be available at `http://127.0.0.1:8080`.
 
-5. **Test the API**
+4. **Test the API**
 
    Send a curl request to the API (e.g., for user octocat):
 
@@ -69,7 +70,7 @@ Ensure you have the following installed:
 
    You should receive a JSON array of octocat's public Gists.
 
-6. **Run Automated Tests**
+5. **Run Automated Tests**
 
    To ensure everything is working correctly and to verify the code quality:  
 
